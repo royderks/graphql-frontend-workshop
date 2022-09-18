@@ -105,7 +105,7 @@ type Query {
       function transformREST(s) {
        var upvotes = JSON.parse(s);
 
-       var count = upvotes.length;
+       var count = upvotes.length || 0;
 
        return count
       }
