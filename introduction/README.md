@@ -174,3 +174,8 @@ query GetArticleById($id: String!) {
 
 </p>
 </details>
+
+### Excercise 6
+
+Finally, the `fetchArticles` function in `src/components/Home.js` can be changed to use a named query. This query can take the `tag` as a variable.
+

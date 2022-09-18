@@ -45,8 +45,8 @@ function Home({ filter }) {
             },
             body: JSON.stringify({
               query: `
-              {
-                articles {
+              query GetArticles($tag: String) {
+                articles(tag: $tag) {
                   id
                   title
                   description
@@ -56,6 +56,9 @@ function Home({ filter }) {
                 }
               }
               `,
+              variables: {
+                tag: filter,
+              },
             }),
           },
         );
