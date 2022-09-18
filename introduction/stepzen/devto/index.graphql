@@ -40,7 +40,10 @@ type Article {
   url: String
   user: User
   upvotes: Int
-    @materializer (query: "totalUpvotes" arguments: [{ name: "postId" field: "id"}])
+    @materializer(
+      query: "totalUpvotes"
+      arguments: [{ name: "postId", field: "id" }]
+    )
 }
 
 type User {
@@ -70,12 +73,27 @@ type Upvote {
   id: String
 }
 
+type UpvoteResponse {
+  name: ID
+}
+
+type Login {
+  id: Int
+  email: String
+  password: String
+  token: String
+}
+
 type Query {
-  articles(tag: String, page: Int, per_page: Int): [Article]
+  articles(tag: String, page: Int, per_page: Int = 10): [Article]
     @rest(endpoint: "https://dev.to/api/articles")
   article(id: String): Article
     @rest(endpoint: "https://dev.to/api/articles/$id")
-  paginatedArticles(tag: String, first: Int! = 20, after: String! = ""): ArticleConnection
+  paginatedArticles(
+    tag: String
+    first: Int! = 20
+    after: String! = ""
+  ): ArticleConnection
     @rest(
       endpoint: "https://dev.to/api/articles?per_page=$first&page=$after"
       resultroot: "articles[]"
@@ -94,33 +112,54 @@ type Query {
         setters: [{ field: "total", path: "total" }]
       }
     )
-  upvotes(postId: Int): [Upvote]
+  upvotes(postId: Int): JSON
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes"
+      endpoint: "https://stepzen-demo-1c698-default-rtdb.firebaseio.com/upvotes.json?orderBy=%22postId%22&equalTo=%22{{.Get \"postId\"}}%22"
+      transforms: [{ pathpattern: [], editor: "objectToArray" }]
     )
+
   totalUpvotes(postId: Int): Int
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes"
+      endpoint: "https://stepzen-demo-1c698-default-rtdb.firebaseio.com/upvotes.json?orderBy=%22postId%22&equalTo=%22{{.Get \"postId\"}}%22"
       ecmascript: """
       function transformREST(s) {
        var upvotes = JSON.parse(s);
 
-       var count = upvotes.length;
+       if (upvotes) {
+         return Object.keys(upvotes).length; 
+       }
 
-       return count
+       return 0;
       }
       """
     )
 }
 
 type Mutation {
-  upvoteArticle(postId: Int): Upvote
+  upvoteArticle(postId: String): JSON
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes"
+      endpoint: "https://stepzen-demo-1c698-default-rtdb.firebaseio.com/upvotes.json"
       method: POST
       postbody: """
       {
-        "postId": "{{ .Get "postId" }}"
+        "postId": "{{.Get "postId"}}"
+      }
+      """
+    )
+  login(email: String!, password: String!): Login
+    @rest(
+      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/users?email=$email&password=$password"
+      ecmascript: """
+      function transformREST(s) {
+       var result = JSON.parse(s);
+
+       if (result.length === 0) {
+         return {
+           error: "Invalid email or password"
+         }
+       }
+
+       return result[0]
       }
       """
     )

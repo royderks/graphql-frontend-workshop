@@ -1,4 +1,13 @@
 import { Link } from 'react-router-dom';
+import { gql, useMutation } from '@apollo/client';
+
+const UPVOTE_ARTICLE = gql`
+  mutation UpvoteArticle($postId: Int!) {
+    upvoteArticle(postId: $postId) {
+      id
+    }
+  }
+`;
 
 const labelStyle = {
   color: '#828282',
@@ -18,6 +27,13 @@ const listItemStyle = {
 };
 
 function ArticleBlock({ id, title, description, user, upvotes, index }) {
+  const [upvoteArticle, { data, loading, error }] = useMutation(
+    UPVOTE_ARTICLE,
+    {
+      variables: { postId: id },
+    },
+  );
+
   return (
     <li key={id} style={listItemStyle}>
       <span style={labelStyle}>{index + 1}. </span>
@@ -30,6 +46,17 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
 
       <p>
         <span style={labelStyle}>{upvotes} upvotes</span>
+
+        <span style={labelStyle}>{error && `Error! ${error.message}`}</span>
+        <span style={labelStyle}>{data?.upvoteArticle?.id && 'Upvoted!'}</span>
+
+        <button
+          type='button'
+          disabled={loading}
+          onClick={() => upvoteArticle()}
+        >
+          {loading ? 'Loading' : 'Upvote'}
+        </button>
       </p>
 
       <p>
