@@ -22,8 +22,8 @@ function Article() {
             },
             body: JSON.stringify({
               query: `
-            {
-              article(id: "${id}") {
+            query GetArticleById($id: String!) {
+              article(id: $id) {
                 id
                 title
                 description
@@ -31,6 +31,9 @@ function Article() {
               }
             }
             `,
+              variables: {
+                id,
+              },
             }),
           },
         );

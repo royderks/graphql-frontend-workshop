@@ -76,7 +76,7 @@ query {
 
 ### Excercise 2
 
-Can you alter the query to also get the username of the user that wrote every article? 
+Can you alter the query to also get the username of the user that wrote every article?
 
 > Hint: Think back to how you inspect a GraphQL API schema.
 
@@ -136,6 +136,8 @@ Change the `fetchArticles` function in `src/components/Home.js` to use the Graph
 
 Also change the request to get a single article from DEV.to. The `fetchArticle` function in `src/components/Article.js` needs to be changed to use the GraphQL API from the previous exercise.
 
+> Hint: how do you pass the variable to the GraphQL query
+
 <details>
 <summary>Show solution</summary>
 <p>
@@ -145,5 +147,30 @@ Also change the request to get a single article from DEV.to. The `fetchArticle` 
 </p>
 </details>
 
+### Excercise 5
 
-Can you alter the query to get the `description`, `stargazerCount` (number of stars), and the `updatedAt` fields from Github? This query needs to be added to the function that fetches the data from the GraphQL API in `pages.index.js`.
+The query you've used in the previous exercise has a query parameter, which can be better handled from a named query. Next to helping you to handle query variables, named queries are important for your GraphQL API and Client later, as they are often used for caching purposes.
+
+Change the query to get an article to a named query, and change the implementation in `src/components/Article.js` to use the named query.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+The query becomes:
+
+```graphql
+query GetArticleById($id: String!) {
+  article(id: $id) {
+    id
+    title
+    description
+    body_html
+  }
+}
+```
+
+[Look at the code]()
+
+</p>
+</details>
