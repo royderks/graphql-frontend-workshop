@@ -1,17 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { gql, useQuery } from '@apollo/client';
-
-const GET_ARTICLE = gql`
-  query GetArticleById($id: String!) {
-    article(id: $id) {
-      id
-      title
-      description
-      body_html
-    }
-  }
-`;
+import { useQuery } from '@apollo/client';
+import { GET_ARTICLE } from '../operations';
 
 const articleStyle = {
   margin: 0,

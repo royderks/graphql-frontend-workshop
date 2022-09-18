@@ -1,20 +1,7 @@
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import ArticleBlock from './ArticleBlock';
-
-const GET_ARTICLES = gql`
-  query GetArticles($tag: String, $page: Int) {
-    articles(tag: $tag, page: $page) {
-      id
-      title
-      description
-      upvotes
-      user {
-        username
-      }
-    }
-  }
-`;
+import { GET_ARTICLES } from '../operations';
 
 const listStyle = {
   listStyle: 'none',

@@ -1,13 +1,6 @@
 import { Link } from 'react-router-dom';
-import { gql, useMutation } from '@apollo/client';
-
-const UPVOTE_ARTICLE = gql`
-  mutation UpvoteArticle($postId: Int!) {
-    upvoteArticle(postId: $postId) {
-      id
-    }
-  }
-`;
+import { useMutation } from '@apollo/client';
+import { GET_ARTICLES, UPVOTE_ARTICLE } from '../operations';
 
 const labelStyle = {
   color: '#828282',
@@ -31,6 +24,7 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
     UPVOTE_ARTICLE,
     {
       variables: { postId: id },
+      refetchQueries: [{ query: GET_ARTICLES }],
     },
   );
 
