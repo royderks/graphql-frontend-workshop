@@ -37,12 +37,32 @@ function Home({ filter }) {
     const fetchArticles = async (filter = '') => {
       try {
         const data = await fetch(
-          `https://dev.to/api/articles${filter ? `?tag=${filter}` : ''}`,
+          `https://public3b47822a17c9dda6.stepzen.net/api/newsapp/__graphql`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query: `
+              {
+                articles {
+                  id
+                  title
+                  description
+                  user {
+                    username
+                  }
+                }
+              }
+              `,
+            }),
+          },
         );
         const result = await data.json();
 
-        if (result) {
-          setArticles(result);
+        if (result?.data?.articles) {
+          setArticles(result.data.articles);
         }
       } catch (e) {
         console.log('Error', e.message);
