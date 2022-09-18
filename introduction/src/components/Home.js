@@ -41,7 +41,7 @@ function Home({ filter }) {
       <ul style={listStyle}>
         {data.articles.length === 0 ? <li style={listItemStyle}>...</li> : null}
         {data.articles.map((article, index) => (
-          <ArticleBlock {...{article, index}} />
+          <ArticleBlock key={article.id} index={index} {...article} />
         ))}
       </ul>
       <div>

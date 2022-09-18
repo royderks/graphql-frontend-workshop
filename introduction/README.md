@@ -268,3 +268,20 @@ Also, display the number of upvotes for each article.
 
 </p>
 </details>
+
+### Excercise 10
+
+Now that we have a component to render an article, we can add a button to upvote an article. The `src/components/ArticleBlock.js` component should have a button to upvote an article. When the button is pressed, a message that the upvote has been submitted should be displayed. The GraphQL API has a mutation to upvote an article, called `upvoteArticle` that you should use.
+
+Add a button to upvote an article, you can use the `useMutation` hook from `@apollo/client` to handle the mutation.
+
+> Bonus: Show a loading indicator when the button to upvote an article is pressed.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
