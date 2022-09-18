@@ -75,7 +75,7 @@ type Query {
     @rest(endpoint: "https://dev.to/api/articles")
   article(id: String): Article
     @rest(endpoint: "https://dev.to/api/articles/$id")
-  paginatedArticles(first: Int! = 20, after: String! = ""): ArticleConnection
+  paginatedArticles(tag: String, first: Int! = 20, after: String! = ""): ArticleConnection
     @rest(
       endpoint: "https://dev.to/api/articles?per_page=$first&page=$after"
       resultroot: "articles[]"

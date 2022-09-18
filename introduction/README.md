@@ -179,3 +179,30 @@ query GetArticleById($id: String!) {
 
 Finally, the `fetchArticles` function in `src/components/Home.js` can be changed to use a named query. This query can take the `tag` as a variable.
 
+When you press the filters, the `tag` variable should be updated meaning new articles are loaded.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
+
+### Excercise 7
+
+GraphQL APIs typically use "cursor-based" pagination. This means that you can use a cursor to get the next page of results. The cursor is a string that is returned with the results, and can be used to get the next page of results. Cursor-based pagination is a bit more complicated than page-based pagination, but it is more efficient and scalable - and is the default pagination strategy for GraphQL but will be handled later on.
+
+The GraphQL API for these excersises support both cursor-based and page-based pagination. The `fetchArticles` function in `src/components/Home.js` can be changed to use page-based pagination. 
+
+Add a button on the bottom of the page to load the next page of articles. You can use the `page` variable in the `articles` query to get the next page of results.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>

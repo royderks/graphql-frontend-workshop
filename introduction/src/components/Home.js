@@ -26,15 +26,21 @@ const titleStyle = {
 
 function Home({ filter }) {
   const [articles, setArticles] = useState([]);
+  const [page, setPage] = useState(1);
 
   // Reset articles when filter changes
   useEffect(() => {
     if (filter) setArticles([]);
   }, [filter]);
 
+  // Reset articles when page changes
+  useEffect(() => {
+    if (page) setArticles([]);
+  }, [page]);
+
   // Fetch articles
   useEffect(() => {
-    const fetchArticles = async (filter = '') => {
+    const fetchArticles = async (filter = '', after = '') => {
       try {
         const data = await fetch(
           `https://public3b47822a17c9dda6.stepzen.net/api/newsapp/__graphql`,
@@ -45,8 +51,8 @@ function Home({ filter }) {
             },
             body: JSON.stringify({
               query: `
-              query GetArticles($tag: String) {
-                articles(tag: $tag) {
+              query GetArticles($tag: String, $page: Int) {
+                articles(tag: $tag, page: $page) {
                   id
                   title
                   description
@@ -58,6 +64,7 @@ function Home({ filter }) {
               `,
               variables: {
                 tag: filter,
+                page,
               },
             }),
           },
@@ -73,34 +80,41 @@ function Home({ filter }) {
     };
 
     if (!articles.length) {
-      fetchArticles(filter);
+      fetchArticles(filter, page);
     }
-  }, [articles, filter]);
+  }, [articles, filter, page]);
 
   return (
-    <ul style={listStyle}>
-      {articles.length === 0 ? <li style={listItemStyle}>...</li> : null}
-      {articles.map(({ id, title, description, user }, index) => (
-        <li key={id} style={listItemStyle}>
-          <span style={labelStyle}>{index + 1}. </span>
+    <>
+      <ul style={listStyle}>
+        {articles.length === 0 ? <li style={listItemStyle}>...</li> : null}
+        {articles.map(({ id, title, description, user }, index) => (
+          <li key={id} style={listItemStyle}>
+            <span style={labelStyle}>{index + 1}. </span>
 
-          <Link to={`articles/${id}`}>
-            <button style={titleStyle}>{title}</button>
-          </Link>
+            <Link to={`articles/${id}`}>
+              <button style={titleStyle}>{title}</button>
+            </Link>
 
-          <span style={{ paddingLeft: 5, ...labelStyle }}>
-            ({user.username})
-          </span>
+            <span style={{ paddingLeft: 5, ...labelStyle }}>
+              ({user.username})
+            </span>
 
-          <p>
-            <small>
-              <span>{description} </span>
-              <Link to={`/articles/${id}`}>More...</Link>
-            </small>
-          </p>
-        </li>
-      ))}
-    </ul>
+            <p>
+              <small>
+                <span>{description} </span>
+                <Link to={`/articles/${id}`}>More...</Link>
+              </small>
+            </p>
+          </li>
+        ))}
+      </ul>
+      <div>
+        <button type='button' onClick={() => setPage(page + 1)}>
+          Next page
+        </button>
+      </div>
+    </>
   );
 }
 
