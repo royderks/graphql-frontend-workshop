@@ -134,7 +134,16 @@ Change the `fetchArticles` function in `src/components/Home.js` to use the Graph
 
 ### Excercise 4
 
+Also change the request to get a single article from DEV.to. The `fetchArticle` function in `src/components/Article.js` needs to be changed to use the GraphQL API from the previous exercise.
 
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
 
 
 Can you alter the query to get the `description`, `stargazerCount` (number of stars), and the `updatedAt` fields from Github? This query needs to be added to the function that fetches the data from the GraphQL API in `pages.index.js`.
