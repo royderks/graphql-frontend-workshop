@@ -251,3 +251,20 @@ Change the `useEffect` Hooks in `src/components/Home.js` and `src/components/Art
 
 </p>
 </details>
+
+### Excercise 9
+
+You cana also use GraphQL to handle mutations. The GraphQL schema has a mutation to add upvotes to an article. But before we'll do that, we'll need to refactor the `scr/components/Home.js` and create a new component to render the articles on the homepage.
+
+Create a new component `src/components/ArticleBlock.js` and move the code to render an individual article to this component. The `src/components/Home.js` component should iterate over this component using the data from GraphQL.
+
+Also, display the number of upvotes for each article.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
