@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { gql, useQuery } from '@apollo/client';
+import ArticleBlock from './ArticleBlock';
 
 const GET_ARTICLES = gql`
   query GetArticles($tag: String, $page: Int) {
@@ -8,6 +8,7 @@ const GET_ARTICLES = gql`
       id
       title
       description
+      upvotes
       user {
         username
       }
@@ -25,19 +26,6 @@ const listItemStyle = {
   margin: '0 5px',
 };
 
-const labelStyle = {
-  color: '#828282',
-  paddingRight: 5,
-};
-
-const titleStyle = {
-  background: 'transparent',
-  border: 'none',
-  font: 'inherit',
-  cursor: 'pointer',
-  padding: '5px 0',
-};
-
 function Home({ filter }) {
   const [page, setPage] = useState(1);
 
@@ -52,25 +40,8 @@ function Home({ filter }) {
     <>
       <ul style={listStyle}>
         {data.articles.length === 0 ? <li style={listItemStyle}>...</li> : null}
-        {data.articles.map(({ id, title, description, user }, index) => (
-          <li key={id} style={listItemStyle}>
-            <span style={labelStyle}>{index + 1}. </span>
-
-            <Link to={`articles/${id}`}>
-              <button style={titleStyle}>{title}</button>
-            </Link>
-
-            <span style={{ paddingLeft: 5, ...labelStyle }}>
-              ({user.username})
-            </span>
-
-            <p>
-              <small>
-                <span>{description} </span>
-                <Link to={`/articles/${id}`}>More...</Link>
-              </small>
-            </p>
-          </li>
+        {data.articles.map((article, index) => (
+          <ArticleBlock key={article.id} index={index} {...article} />
         ))}
       </ul>
       <div>
