@@ -194,9 +194,54 @@ When you press the filters, the `tag` variable should be updated meaning new art
 
 GraphQL APIs typically use "cursor-based" pagination. This means that you can use a cursor to get the next page of results. The cursor is a string that is returned with the results, and can be used to get the next page of results. Cursor-based pagination is a bit more complicated than page-based pagination, but it is more efficient and scalable - and is the default pagination strategy for GraphQL but will be handled later on.
 
-The GraphQL API for these excersises support both cursor-based and page-based pagination. The `fetchArticles` function in `src/components/Home.js` can be changed to use page-based pagination. 
+The GraphQL API for these excersises support both cursor-based and page-based pagination. The `fetchArticles` function in `src/components/Home.js` can be changed to use page-based pagination.
 
 Add a button on the bottom of the page to load the next page of articles. You can use the `page` variable in the `articles` query to get the next page of results.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
+
+### Excercise 8
+
+Instead of using `fetch` we can also use a GraphQL client library to query the GraphQL API. In this exercise, you will use [Apollo Client](https://www.apollographql.com/docs/react/) to query the GraphQL API.
+
+Install Apollo Client:
+
+```
+npm i @apollo/client graphql
+
+# or
+
+yarn add @apollo/client graphql
+```
+
+And add a `ApolloProvider` to the `src/index.js` file:
+
+```js
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql',
+  cache: new InMemoryCache(),
+});
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+);
+```
+
+The GraphQL API is available at the endpoint printed in the terminal where you ran `stepzen start`, this endpoint starts with `https://` (the `localhost` endpoint is only available for local epxloration with GraphiQL).
+
+Change the `useEffect` Hooks in `src/components/Home.js` and `src/components/Article.js` to use Apollo Client to query the GraphQL API. You can use the `useQuery` hook to query the API.
 
 <details>
 <summary>Show solution</summary>
