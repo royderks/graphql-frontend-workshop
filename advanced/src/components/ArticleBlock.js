@@ -38,20 +38,24 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
 
       <span style={{ paddingLeft: 5, ...labelStyle }}>({user.username})</span>
 
-      <p>
-        <span style={labelStyle}>{upvotes} upvotes</span>
+      {(typeof upvotes !== 'undefined' && upvotes !== null) ? (
+        <p>
+          <span style={labelStyle}>{upvotes} upvotes</span>
 
-        <span style={labelStyle}>{error && `Error! ${error.message}`}</span>
-        <span style={labelStyle}>{data?.upvoteArticle?.id && 'Upvoted!'}</span>
+          <span style={labelStyle}>{error && `Error! ${error.message}`}</span>
+          <span style={labelStyle}>
+            {data?.upvoteArticle?.id && 'Upvoted!'}
+          </span>
 
-        <button
-          type='button'
-          disabled={loading}
-          onClick={() => upvoteArticle()}
-        >
-          {loading ? 'Loading' : 'Upvote'}
-        </button>
-      </p>
+          <button
+            type='button'
+            disabled={loading}
+            onClick={() => upvoteArticle()}
+          >
+            {loading ? 'Loading' : 'Upvote'}
+          </button>
+        </p>
+      ): null}
 
       <p>
         <small>
