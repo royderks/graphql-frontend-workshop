@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
+import { useMutation } from '@apollo/client';
+import { LOGIN_USER } from '../operations';
 
 const modalStyles = {
   content: {
@@ -17,6 +19,15 @@ function Login() {
   const [password, setPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
 
+  const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
+
+  useEffect(() => {
+    if (data?.login?.token) {
+      localStorage.setItem('token', data.login.token);
+      setShowModal(false);
+    }
+  }, [data]);
+
   return (
     <div>
       <button onClick={() => setShowModal(true)}>Login</button>
@@ -27,10 +38,14 @@ function Login() {
         style={modalStyles}
       >
         <p>
+          {loading && <span>Submitting...</span>}
+          {error && <span>`Submission error! ${error.message}`</span>}
+
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              setShowModal(false);
+
+              loginUser({ variables: { email, password } });
             }}
           >
             <input
