@@ -38,7 +38,13 @@ function App() {
             <h1>Hipster news app</h1>
             <div style={navStyle}>
               <Filter filter={filter} setFilter={setFilter} />
-              <Login />
+              {localStorage.getItem('token') ? (
+                <button onClick={() => localStorage.removeItem('token')}>
+                  Logout
+                </button>
+              ) : (
+                <Login />
+              )}
             </div>
           </nav>
 

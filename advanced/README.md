@@ -108,6 +108,8 @@ Let's dive into the React application.
 
 Hook up the component `src/components/Login.js` to work with this mutation. Store the returned `token` in localStorage.
 
+> Bonus: Add a logout button to the `src/App.js` component. When the user clicks the button, the token should be removed from localStorage.
+
 <details>
 <summary>Show solution</summary>
 <p>
