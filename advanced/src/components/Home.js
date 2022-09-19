@@ -17,7 +17,7 @@ function Home({ filter }) {
   const [page, setPage] = useState(1);
 
   const { loading, error, data } = useQuery(GET_ARTICLES, {
-    variables: { tag: filter, page },
+    variables: { tag: filter, page, loggedIn: !!localStorage.getItem('token') },
   });
 
   if (loading) return 'Loading...';
