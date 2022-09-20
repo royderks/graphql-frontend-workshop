@@ -1,11 +1,18 @@
 import { gql } from '@apollo/client';
 
+export const CORE_ARTICLE_FIELDS = gql`
+  fragment CoreArticleFields on Article {
+    id
+    title
+    description
+  }
+`;
+
 export const GET_ARTICLES = gql`
+  ${CORE_ARTICLE_FIELDS}
   query GetArticles($tag: String, $page: Int, $loggedIn: Boolean = false) {
     articles(tag: $tag, page: $page) {
-      id
-      title
-      description
+      ...CoreArticleFields
       upvotes @include(if: $loggedIn)
       user {
         username
@@ -15,11 +22,10 @@ export const GET_ARTICLES = gql`
 `;
 
 export const GET_ARTICLE = gql`
+  ${CORE_ARTICLE_FIELDS}
   query GetArticleById($id: String!) {
     article(id: $id) {
-      id
-      title
-      description
+      ...CoreArticleFields
       body_html
     }
   }
