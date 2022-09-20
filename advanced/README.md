@@ -30,6 +30,10 @@ The CLI is installed globally, so you can use it in different projects too.
 
 After the installation is completed, you can [signup](https://stepzen.com/signup) for a free account. You will be able to use this account to create a secure GraphQL API for your data. Also, you can proceed without signing up and use a public GraphQL API endpoint.
 
+## And Finally...
+
+[Install Apollo Client DevTools](https://www.apollographql.com/docs/react/development-testing/developer-tooling#apollo-client-devtools) in your browser to inspect the GraphQL queries and mutations that are being executed in the application.
+
 ## Excercises
 
 ### Excercise 1
@@ -124,6 +128,48 @@ Hook up the component `src/components/Login.js` to work with this mutation. Stor
 GraphQL has built-in directives, which can be used to include (`@include`) or skip (`@skip`) fields in a query. You can use these directives to create a query that only returns the `id` and `title` of an article when a variable is passed to the query.
 
 Can you alter the query to get the `upvotes` for the articles on the homepage so it will only return the upvotes when a variable is passed to the query that indicated the user is logged in? Also, hide the upvote button on the homepage if the query didn't return the `upvotes` field.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
+
+### Excercise 4
+
+When you are resuing parts of fields, you can use fragments to avoid repeating yourself. Fragments can be used to define a part of a query, and then you can use the fragment in multiple queries.
+
+The fields for an article in `src/operations.js` are repeated in the `GetArticles` query and the `GetArticleById` query. Can you create a fragment for the fields of an article, and use the fragment in both queries?
+
+<details> 
+<summary>Show solution</summary>
+<p>
+
+[Look at the code]()
+
+</p>
+</details>
+
+
+
+### Excercise 5
+
+Using TypeScript together with GraphQL is a great combination. You can use TypeScript to define the types for your GraphQL schema, and you can use TypeScript to define the types for your GraphQL queries and mutations.
+
+To get started with TypeScript, you need to install the TypeScript compiler:
+
+```
+npm install --save-dev typescript @types/node @types/react @types/react-dom @types/jest @types/react-router-dom @types/react-modal
+
+# or
+
+yarn add -D typescript @types/node @types/react @types/react-dom @types/jest @types/react-router-dom @types/react-modal
+```
+
+Next, rename any file to be a TypeScript file (e.g. `src/index.js` to `src/index.tsx`) and restart your development server!
 
 <details>
 <summary>Show solution</summary>

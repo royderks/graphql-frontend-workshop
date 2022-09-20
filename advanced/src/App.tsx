@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import Filter from './components/Filter';
 import Home from './components/Home';
@@ -51,7 +51,7 @@ function App() {
           <div style={contentStyle}>
             <Routes>
               <Route path='/' element={<Home filter={filter} />} />
-              <Route exact path='/articles/:id' element={<Article />} />
+              <Route path='/articles/:id' element={<Article />} />
             </Routes>
           </div>
         </div>
