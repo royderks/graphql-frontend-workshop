@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../operations';

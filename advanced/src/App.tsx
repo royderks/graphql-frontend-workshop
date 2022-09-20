@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import Filter from './components/Filter';
 import Home from './components/Home';
 import Article from './components/Article';
+import Login from './components/Login';
 
 const bodyStyle = {
   maxWidth: 960,
@@ -18,8 +19,13 @@ const headerStyle = {
 };
 
 const contentStyle = {
-background: '#f6f6ef'
-}
+  background: '#f6f6ef',
+};
+
+const navStyle = {
+  display: 'flex',
+  alignItems: 'center',
+};
 
 function App() {
   const [filter, setFilter] = useState('');
@@ -30,14 +36,23 @@ function App() {
         <div style={bodyStyle}>
           <nav style={headerStyle}>
             <h1>Hipster news app</h1>
-            <Filter filter={filter} setFilter={setFilter} />
+            <div style={navStyle}>
+              <Filter filter={filter} setFilter={setFilter} />
+              {localStorage.getItem('token') ? (
+                <button onClick={() => localStorage.removeItem('token')}>
+                  Logout
+                </button>
+              ) : (
+                <Login />
+              )}
+            </div>
           </nav>
 
           <div style={contentStyle}>
-          <Routes>
-            <Route path='/' element={<Home filter={filter} />} />
-            <Route exact path='/articles/:id' element={<Article />} />
-          </Routes>
+            <Routes>
+              <Route path='/' element={<Home filter={filter} />} />
+              <Route path='/articles/:id' element={<Article />} />
+            </Routes>
           </div>
         </div>
       </div>

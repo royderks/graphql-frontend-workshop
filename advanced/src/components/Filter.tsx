@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const tagListStyle = {
@@ -14,7 +15,12 @@ const tagItemStyle = {
 
 const tags = ['react', 'graphql', 'typescript'];
 
-function Filter({ filter, setFilter }) {
+type FilterProps = {
+  filter: string;
+  setFilter: (filter: string) => void;
+};
+
+function Filter({ filter, setFilter }: FilterProps) {
   return (
     <ul style={tagListStyle}>
       <li style={tagItemStyle}>Filter:</li>
