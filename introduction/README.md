@@ -2,7 +2,7 @@
 
 Clone this repository (or fork it), move into the directory `introduction` install all dependencies by running:
 
-```
+```bash
 npm i
 # or
 yarn
@@ -10,7 +10,7 @@ yarn
 
 After the installation is completed, run the development server:
 
-```
+```bash
 npm start
 # or
 yarn start
@@ -22,7 +22,7 @@ Open http://localhost:3000 in your browser to see the result. Data from DEV.to i
 
 To get a free GraphQL API, you need to install the [StepZen](https://stepzen.com) CLI:
 
-```
+```bash
 npm i -g stepzen
 ```
 
@@ -42,7 +42,7 @@ This application uses a GraphQL API created with StepZen, that is connected to D
 
 To deploy the API, run the following command:
 
-```
+```bash
 cd stepzen
 stepzen start
 ```
@@ -217,7 +217,7 @@ Instead of using `fetch` we can also use a GraphQL client library to query the G
 
 Install Apollo Client:
 
-```
+```bash
 npm i @apollo/client graphql
 
 # or
@@ -332,7 +332,7 @@ Refetch the data from the GraphQL API to list the articles when an article is up
 <summary>Show solution</summary>
 <p>
 
-The easies way to do refetching is by using the query name. Remember why named queries were important?
+The easiest way to do refetching is by using the query name. Remember why named queries were important?
 
 ```js
 function ArticleBlock({ id, title, description, user, upvotes, index }) {

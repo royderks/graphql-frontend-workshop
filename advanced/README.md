@@ -2,7 +2,7 @@
 
 Clone this repository (or fork it), move into the directory `introduction` install all dependencies by running:
 
-```
+```bash
 npm i
 # or
 yarn
@@ -10,7 +10,7 @@ yarn
 
 After the installation is completed, run the development server:
 
-```
+```bash
 npm start
 # or
 yarn start
@@ -22,7 +22,7 @@ Open http://localhost:3000 in your browser to see the result. Data from DEV.to i
 
 To get a free GraphQL API, you need to install the [StepZen](https://stepzen.com) CLI:
 
-```
+```bash
 npm i -g stepzen
 ```
 
@@ -42,7 +42,7 @@ This application uses a GraphQL API created with StepZen, that is connected to D
 
 To deploy the API, run the following command:
 
-```
+```bash
 cd stepzen
 stepzen start
 ```
@@ -153,15 +153,13 @@ The fields for an article in `src/operations.js` are repeated in the `GetArticle
 </p>
 </details>
 
-
-
 ### Excercise 5
 
 Using TypeScript together with GraphQL is a great combination. You can use TypeScript to define the types for your GraphQL schema, and you can use TypeScript to define the types for your GraphQL queries and mutations.
 
 To get started with TypeScript, you need to install the TypeScript compiler:
 
-```
+```bash
 npm install --save-dev typescript @types/node @types/react @types/react-dom @types/jest @types/react-router-dom @types/react-modal
 
 # or
@@ -179,3 +177,94 @@ Next, rename any file to be a TypeScript file (e.g. `src/index.js` to `src/index
 
 </p>
 </details>
+
+### Excercise 6
+
+You can use the GraphQL schema to autogenerate the TypeScript types instead of having to manually type these. To do this, you need to install the `graphql-codegen` CLI, which you first need to install using npm (including its dependencies):
+
+```bash
+npm i --save-dev @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations
+# or
+yarn add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations
+```
+
+Create a new file called `codegen.yml` with the following contents:
+
+```yaml
+overwrite: true
+schema: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql'
+documents: 'src/operations.ts'
+generates:
+  ./src/generated/types.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+```
+
+Run `npx graphql-codegen --config codegen.yml` to generate the TypeScript files based on the GraphQL schema. Instead of using `npx` you can also create a new script in `package.json` to generate the types.
+
+Delete the file `src/types.ts` and replace all the missing type definitions with the generated types. Are there any other changes you need to make to our code?
+
+### Excercise 7
+
+Next to the types for the GraphQL schema, you can also autogenerate type-safe Apollo Client Hooks for your queries and mutations. To do this, you need to install a new plugin for the the `graphql-codegen` CLI:
+
+```bash
+npm i --save-dev @graphql-codegen/typescript-react-apollo
+
+#or
+
+yarn add -D @graphql-codegen/typescript-react-apollo
+```
+
+And add this plugin to the `config.yml` file for the code generator.
+
+Run the script to generate the TypeScript types again. This time it will also create type-safe Hooks for all the operations defined in `src/operations.ts`. Replace all the Apollo Client Hooks with the generated ones.
+
+## Excercise 8
+
+Testing
+
+## BONUS: Change the client to use `urql`
+
+There are more client-side libraries available to use GraphQL in your frontend application. After Apollo Client, [urql](https://formidable.com/open-source/urql/docs/basics/react-preact/) is the second most popular one. 
+
+Why use urql instead of Apollo Client? Some reasons might be:
+- Smaller bundle size (+/-5kb vs +/-32kb)
+- Easier to customize and extend (using Exchanges)
+- Lots of plugins for common use cases (like auth & pagination)
+
+> There's also [Relay](https://relay.dev), but the way Relay handles data coming from GraphQL is very different from Apollo Client and urql. Relay is more of a framework than a library, and it's not as easy to get started with. Relay is also not as popular as Apollo Client and urql, so we won't be using it in this workshop.
+
+See [here](https://formidable.com/open-source/urql/docs/comparison/) for a complete comparison between Apollo Client, urql and Relay.
+
+Convert the application to use urql instead of Apollo Client. This means you would need to change the `client` in `src/index.tsx`, and there are some slight differences between the returned data from the different Hooks. You cana install urql from npm:
+
+```bash
+npm i urql
+
+#or
+
+yarn add urql
+```
+
+> Hint: You can autogenerate the Hooks for urql in the same way as for Apollo Client. Make sure to install `@graphql-codegen/typescript-urql` and add it to the list of plugins for the code generator.
+
+## BONUS: Use cursor-based pagination
+
+GraphQL APIs typically use "cursor-based" pagination. This means that you can use a cursor to get the next page of results. The cursor is a string that is returned with the results, and can be used to get the next page of results.
+
+Cursor-based pagination is for example used by [Relay](https://relay.dev/graphql/connections.htm), and is also supported by the StepZen GraphQL API. The query parameters for `first` and `after` are used for pagination. With `first` you define the amount of results, while `after` is the cursor of the last result on the previous page. Think of `cursor` as `offset`, which you might know from other pagination methods. To dynamically get the value for `after` you should use the value from the `endCursor` field in `pageInfo`. Also, `hasNextPage` lets you know if there is a next page based on `first` and `endCursor` values.
+
+The results won't be the response type we've seen before but a "connection" type:
+
+- Connection type: a connection is a collection of objects with metadata such as:
+    - `pageInfo` has all the information about the current page and contains `hasNextPage`, `hasPreviousPage`, `startCursor`, `endCursor`.
+    - `edges` will provide you flexibility to use your data (node). Each edge has:
+        - a `node`: a record or a data
+        - a `cursor`: base64 encoded string to help GraphQL with pagination
+
+Apply cursor-based pagination for the articles listed on the homepage. Make sure the count on the left side is working correctly, meaning the results will be appended to the previously loaded results.
+
+> Hint: have a look at the `paginatedArticles` query in the GraphQL API schema.
+ 
