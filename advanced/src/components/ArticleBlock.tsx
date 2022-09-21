@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
-import { GET_ARTICLES, UPVOTE_ARTICLE } from '../operations';
+import { GET_ARTICLES } from '../operations';
 import {
   Article as ArticleType,
-  UpvoteArticleMutation,
-  UpvoteArticleMutationVariables,
+  useUpvoteArticleMutation
 } from '../generated/types';
 
 const labelStyle = {
@@ -37,10 +35,7 @@ function ArticleBlock({
   upvotes,
   index,
 }: ArticleBlockTypes) {
-  const [upvoteArticle, { data, loading, error }] = useMutation<
-    UpvoteArticleMutation,
-    UpvoteArticleMutationVariables
-  >(UPVOTE_ARTICLE, {
+  const [upvoteArticle, { data, loading, error }] = useUpvoteArticleMutation({
     refetchQueries: [{ query: GET_ARTICLES }],
   });
 

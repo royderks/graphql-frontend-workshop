@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
 import ArticleBlock from './ArticleBlock';
-import { GET_ARTICLES } from '../operations';
-import {
-  GetArticlesQuery,
-  GetArticlesQueryVariables,
-} from '../generated/types';
+import { useGetArticlesQuery } from '../generated/types';
 
 const listStyle = {
   listStyle: 'none',
@@ -20,10 +15,7 @@ const listItemStyle = {
 function Home({ filter }: { filter: string }) {
   const [page, setPage] = useState(1);
 
-  const { loading, error, data } = useQuery<
-    GetArticlesQuery,
-    GetArticlesQueryVariables
-  >(GET_ARTICLES, {
+  const { loading, error, data } = useGetArticlesQuery({
     variables: {
       tag: filter,
       page,

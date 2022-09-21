@@ -217,7 +217,7 @@ npm i --save-dev @graphql-codegen/typescript-react-apollo
 yarn add -D @graphql-codegen/typescript-react-apollo
 ```
 
-And add this plugin to the `config.yml` file for the code generator.
+And add this plugin to the `codegen.yml` file for the code generator.
 
 Run the script to generate the TypeScript types again. This time it will also create type-safe Hooks for all the operations defined in `src/operations.ts`. Replace all the Apollo Client Hooks with the generated ones.
 

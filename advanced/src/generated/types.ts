@@ -1,8 +1,11 @@
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -286,3 +289,155 @@ export type LoginUserMutationVariables = Exact<{
 
 
 export type LoginUserMutation = { __typename?: 'Mutation', login?: { __typename?: 'Login', token?: string | null } | null };
+
+export const CoreArticleFieldsFragmentDoc = gql`
+    fragment CoreArticleFields on Article {
+  id
+  title
+  description
+}
+    `;
+export const GetArticlesDocument = gql`
+    query GetArticles($tag: String, $page: Int, $loggedIn: Boolean = false) {
+  articles(tag: $tag, page: $page) {
+    ...CoreArticleFields
+    upvotes @include(if: $loggedIn)
+    user {
+      username
+    }
+  }
+}
+    ${CoreArticleFieldsFragmentDoc}`;
+
+/**
+ * __useGetArticlesQuery__
+ *
+ * To run a query within a React component, call `useGetArticlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArticlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArticlesQuery({
+ *   variables: {
+ *      tag: // value for 'tag'
+ *      page: // value for 'page'
+ *      loggedIn: // value for 'loggedIn'
+ *   },
+ * });
+ */
+export function useGetArticlesQuery(baseOptions?: Apollo.QueryHookOptions<GetArticlesQuery, GetArticlesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetArticlesQuery, GetArticlesQueryVariables>(GetArticlesDocument, options);
+      }
+export function useGetArticlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetArticlesQuery, GetArticlesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetArticlesQuery, GetArticlesQueryVariables>(GetArticlesDocument, options);
+        }
+export type GetArticlesQueryHookResult = ReturnType<typeof useGetArticlesQuery>;
+export type GetArticlesLazyQueryHookResult = ReturnType<typeof useGetArticlesLazyQuery>;
+export type GetArticlesQueryResult = Apollo.QueryResult<GetArticlesQuery, GetArticlesQueryVariables>;
+export const GetArticleByIdDocument = gql`
+    query GetArticleById($id: String!) {
+  article(id: $id) {
+    ...CoreArticleFields
+    body_html
+  }
+}
+    ${CoreArticleFieldsFragmentDoc}`;
+
+/**
+ * __useGetArticleByIdQuery__
+ *
+ * To run a query within a React component, call `useGetArticleByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetArticleByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetArticleByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetArticleByIdQuery(baseOptions: Apollo.QueryHookOptions<GetArticleByIdQuery, GetArticleByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetArticleByIdQuery, GetArticleByIdQueryVariables>(GetArticleByIdDocument, options);
+      }
+export function useGetArticleByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetArticleByIdQuery, GetArticleByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetArticleByIdQuery, GetArticleByIdQueryVariables>(GetArticleByIdDocument, options);
+        }
+export type GetArticleByIdQueryHookResult = ReturnType<typeof useGetArticleByIdQuery>;
+export type GetArticleByIdLazyQueryHookResult = ReturnType<typeof useGetArticleByIdLazyQuery>;
+export type GetArticleByIdQueryResult = Apollo.QueryResult<GetArticleByIdQuery, GetArticleByIdQueryVariables>;
+export const UpvoteArticleDocument = gql`
+    mutation UpvoteArticle($postId: Int!) {
+  upvoteArticle(postId: $postId) {
+    id
+  }
+}
+    `;
+export type UpvoteArticleMutationFn = Apollo.MutationFunction<UpvoteArticleMutation, UpvoteArticleMutationVariables>;
+
+/**
+ * __useUpvoteArticleMutation__
+ *
+ * To run a mutation, you first call `useUpvoteArticleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpvoteArticleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [upvoteArticleMutation, { data, loading, error }] = useUpvoteArticleMutation({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useUpvoteArticleMutation(baseOptions?: Apollo.MutationHookOptions<UpvoteArticleMutation, UpvoteArticleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpvoteArticleMutation, UpvoteArticleMutationVariables>(UpvoteArticleDocument, options);
+      }
+export type UpvoteArticleMutationHookResult = ReturnType<typeof useUpvoteArticleMutation>;
+export type UpvoteArticleMutationResult = Apollo.MutationResult<UpvoteArticleMutation>;
+export type UpvoteArticleMutationOptions = Apollo.BaseMutationOptions<UpvoteArticleMutation, UpvoteArticleMutationVariables>;
+export const LoginUserDocument = gql`
+    mutation LoginUser($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+  }
+}
+    `;
+export type LoginUserMutationFn = Apollo.MutationFunction<LoginUserMutation, LoginUserMutationVariables>;
+
+/**
+ * __useLoginUserMutation__
+ *
+ * To run a mutation, you first call `useLoginUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginUserMutation, { data, loading, error }] = useLoginUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginUserMutation(baseOptions?: Apollo.MutationHookOptions<LoginUserMutation, LoginUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginUserMutation, LoginUserMutationVariables>(LoginUserDocument, options);
+      }
+export type LoginUserMutationHookResult = ReturnType<typeof useLoginUserMutation>;
+export type LoginUserMutationResult = Apollo.MutationResult<LoginUserMutation>;
+export type LoginUserMutationOptions = Apollo.BaseMutationOptions<LoginUserMutation, LoginUserMutationVariables>;
