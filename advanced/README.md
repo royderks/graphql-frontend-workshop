@@ -75,7 +75,7 @@ mutation UpvoteArticle($postId: Int!) {
   }
 }
 
-# compare 
+# compare
 
 query GetArticleById($id: String!) {
   article(id: $id) {
@@ -99,7 +99,10 @@ But there is also a "second layer" of authentication, meaning the users that nee
 To get a JWT token, you need to run the following mutation:
 
 ```graphql
-mutation LoginUser($email: String = "demo@stepzen.com", $password: String = "demo") {
+mutation LoginUser(
+  $email: String = "demo@stepzen.com"
+  $password: String = "demo"
+) {
   login(email: $email, password: $password) {
     id
     email
@@ -108,7 +111,7 @@ mutation LoginUser($email: String = "demo@stepzen.com", $password: String = "dem
 }
 ```
 
-Let's dive into the React application. 
+Let's dive into the React application.
 
 Hook up the component `src/components/Login.js` to work with this mutation. Store the returned `token` in localStorage.
 
@@ -223,13 +226,57 @@ Run the script to generate the TypeScript types again. This time it will also cr
 
 ## Excercise 8
 
-Testing
+Now that we have a working application, we can start adding tests. For this we'll be using React Testing Library and Jest. Apollo Client also comes with a set of built-in utilities to help you write tests for your application, such as giving you a `MockedProvider` that you can use to pass mocks to the Apollo Client Hooks in your components.
+
+Add the testing library for React:
+
+```bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+
+# or
+
+yarn add -D @testing-library/react @testing-library/jest-dom
+```
+
+And make sure the testing script in `package.json` is correct:
+
+```json
+{
+  "scripts": {
+    // ...
+    "test": "react-scripts test"
+  }
+}
+```
+
+Now you can run `npm run test` or `yarn test` to run the tests. Let's start by adding a test for the `Article` component. Create a new file called `Article.test.jsx` (or `.tsx`) in the `src` folder and add the following test:
+
+```jsx
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { MockedProvider } from '@apollo/client/testing';
+import Articles from './Article';
+
+const mocks = []; // We'll fill this in next
+
+it('renders without error', async () => {
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <Articles />
+    </MockedProvider>,
+  );
+  expect(await screen.findByText('Loading...')).toBeInTheDocument();
+});
+```
+
+Or choose a different file structure to add the test file, depending on your own preference.
 
 ## BONUS: Change the client to use `urql`
 
-There are more client-side libraries available to use GraphQL in your frontend application. After Apollo Client, [urql](https://formidable.com/open-source/urql/docs/basics/react-preact/) is the second most popular one. 
+There are more client-side libraries available to use GraphQL in your frontend application. After Apollo Client, [urql](https://formidable.com/open-source/urql/docs/basics/react-preact/) is the second most popular one.
 
 Why use urql instead of Apollo Client? Some reasons might be:
+
 - Smaller bundle size (+/-5kb vs +/-32kb)
 - Easier to customize and extend (using Exchanges)
 - Lots of plugins for common use cases (like auth & pagination)
@@ -259,12 +306,11 @@ Cursor-based pagination is for example used by [Relay](https://relay.dev/graphql
 The results won't be the response type we've seen before but a "connection" type:
 
 - Connection type: a connection is a collection of objects with metadata such as:
-    - `pageInfo` has all the information about the current page and contains `hasNextPage`, `hasPreviousPage`, `startCursor`, `endCursor`.
-    - `edges` will provide you flexibility to use your data (node). Each edge has:
-        - a `node`: a record or a data
-        - a `cursor`: base64 encoded string to help GraphQL with pagination
+  - `pageInfo` has all the information about the current page and contains `hasNextPage`, `hasPreviousPage`, `startCursor`, `endCursor`.
+  - `edges` will provide you flexibility to use your data (node). Each edge has:
+    - a `node`: a record or a data
+    - a `cursor`: base64 encoded string to help GraphQL with pagination
 
 Apply cursor-based pagination for the articles listed on the homepage. Make sure the count on the left side is working correctly, meaning the results will be appended to the previously loaded results.
 
 > Hint: have a look at the `paginatedArticles` query in the GraphQL API schema.
- 
