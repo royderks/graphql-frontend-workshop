@@ -121,7 +121,7 @@ Hook up the component `src/components/Login.js` to work with this mutation. Stor
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-2)
 
 </p>
 </details>
@@ -136,7 +136,7 @@ Can you alter the query to get the `upvotes` for the articles on the homepage so
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-3)
 
 </p>
 </details>
@@ -147,11 +147,11 @@ When you are resuing parts of fields, you can use fragments to avoid repeating y
 
 The fields for an article in `src/operations.js` are repeated in the `GetArticles` query and the `GetArticleById` query. Can you create a fragment for the fields of an article, and use the fragment in both queries?
 
-<details> 
+<details>
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-4)
 
 </p>
 </details>
@@ -176,7 +176,7 @@ Next, rename any file to be a TypeScript file (e.g. `src/index.js` to `src/index
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-5)
 
 </p>
 </details>
@@ -208,6 +208,15 @@ Run `npx graphql-codegen --config codegen.yml` to generate the TypeScript files 
 
 Delete the file `src/types.ts` and replace all the missing type definitions with the generated types. Are there any other changes you need to make to our code?
 
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-6)
+
+</p>
+</details>
+
 ### Excercise 7
 
 Next to the types for the GraphQL schema, you can also autogenerate type-safe Apollo Client Hooks for your queries and mutations. To do this, you need to install a new plugin for the the `graphql-codegen` CLI:
@@ -223,6 +232,15 @@ yarn add -D @graphql-codegen/typescript-react-apollo
 And add this plugin to the `codegen.yml` file for the code generator.
 
 Run the script to generate the TypeScript types again. This time it will also create type-safe Hooks for all the operations defined in `src/operations.ts`. Replace all the Apollo Client Hooks with the generated ones.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-7)
+
+</p>
+</details>
 
 ## Excercise 8
 
@@ -270,6 +288,36 @@ it('renders without error', async () => {
 ```
 
 Or choose a different file structure to add the test file, depending on your own preference.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-8)
+
+</p>
+</details>
+
+## Excercise 9
+
+Let's add some mock data and really test our GraphQL application. We'll be using `mocks` option on `MockedProvider` from Apollo Client to mock the data that we get from the GraphQL API. The `MockedProvider` is a component that you can wrap around your component to pass mock data to the Apollo Client Hooks. It will only return the mock data when the query or mutation **exactly** matches the one that you passed to the `mocks` option.
+
+Test the `Article` component using mock data, check for the existince of the `title` and `description` fields in the rendered component.
+
+> Hint: Check the contents of `src/components/Article`, are there any libraries you should mock?
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-9)
+
+</p>
+</details>
+
+## BONUS: Test all components
+
+Next to the `Article` component, you could also test the other components in the application. Try to write tests for the `Home` and `Login` components. Use the `Article` component as an example.
 
 ## BONUS: Change the client to use `urql`
 

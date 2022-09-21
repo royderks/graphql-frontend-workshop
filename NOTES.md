@@ -50,3 +50,41 @@ it('renders without error', async () => {
 
 
 
+
+
+import '@testing-library/jest-dom';
+import { act, render, screen, waitFor } from '@testing-library/react';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import Article from './Article';
+import { GetArticleByIdDocument } from 'src/generated/types';
+
+import { loadSchema } from '@graphql-tools/load';
+import { JsonFileLoader } from '@graphql-tools/json-file-loader';
+import { SchemaLink } from '@apollo/client/link/schema';
+
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import schemaFile from 'src/generated/introspection.json';
+import { printSchema, buildClientSchema } from 'graphql/utilities';
+
+jest.mock('react-router-dom', () => ({
+  useParams: () => ({ id: '12121' }),
+}));
+
+it('renders without error', async () => {
+    const schemaSDL = printSchema(buildClientSchema(schemaFile));
+    const schema = makeExecutableSchema({
+      typeDefs: schemaSDL,
+    });
+
+    const client = new ApolloClient({
+      link: new SchemaLink({ schema }),
+      cache: new InMemoryCache(),
+    });
+
+    render(
+      <ApolloProvider client={client}>
+        <Article />
+      </ApolloProvider>,
+    );
+});
+
