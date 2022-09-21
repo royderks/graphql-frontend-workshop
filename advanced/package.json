@@ -16,6 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "test": "react-scripts test",
     "generate": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
@@ -40,6 +41,8 @@
     "@graphql-codegen/typescript": "^2.7.3",
     "@graphql-codegen/typescript-operations": "^2.5.3",
     "@graphql-codegen/typescript-react-apollo": "^3.3.3",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.0.3",
     "@types/node": "^18.7.18",
     "@types/react": "^18.0.20",
