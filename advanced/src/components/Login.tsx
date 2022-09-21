@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../operations';
+import {
+  LoginUserMutation,
+  LoginUserMutationVariables,
+} from 'src/generated/types';
 
 const modalStyles = {
   content: {
@@ -19,7 +23,10 @@ function Login() {
   const [password, setPassword] = useState('');
   const [showModal, setShowModal] = useState(false);
 
-  const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
+  const [loginUser, { data, loading, error }] = useMutation<
+    LoginUserMutation,
+    LoginUserMutationVariables
+  >(LOGIN_USER);
 
   useEffect(() => {
     if (data?.login?.token) {

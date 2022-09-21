@@ -1,0 +1,8 @@
+overwrite: true
+schema: 'https://public3b47822a17c9dda6.stepzen.net/api/newsapp/__graphql'
+documents: './src/operations.ts'
+generates:
+  ./src/generated/types.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'

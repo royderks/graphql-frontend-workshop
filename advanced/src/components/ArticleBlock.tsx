@@ -2,7 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { GET_ARTICLES, UPVOTE_ARTICLE } from '../operations';
-import { ArticleType, UpvoteType } from 'src/types';
+import {
+  Article as ArticleType,
+  UpvoteArticleMutation,
+  UpvoteArticleMutationVariables,
+} from '../generated/types';
 
 const labelStyle = {
   color: '#828282',
@@ -25,14 +29,6 @@ type ArticleBlockTypes = {
   index: number;
 } & ArticleType;
 
-type UpvoteArticleData = {
-  upvoteArticle: UpvoteType;
-};
-
-type UpvoteArticleVars = {
-  postId: string;
-};
-
 function ArticleBlock({
   id,
   title,
@@ -42,10 +38,9 @@ function ArticleBlock({
   index,
 }: ArticleBlockTypes) {
   const [upvoteArticle, { data, loading, error }] = useMutation<
-    UpvoteArticleData,
-    UpvoteArticleVars
+    UpvoteArticleMutation,
+    UpvoteArticleMutationVariables
   >(UPVOTE_ARTICLE, {
-    variables: { postId: id },
     refetchQueries: [{ query: GET_ARTICLES }],
   });
 
@@ -59,7 +54,7 @@ function ArticleBlock({
 
       <span style={{ paddingLeft: 5, ...labelStyle }}>({user?.username})</span>
 
-      {typeof upvotes !== 'undefined' && upvotes !== null ? (
+      {typeof upvotes !== 'undefined' && upvotes !== null && id ? (
         <p>
           <span style={labelStyle}>{upvotes} upvotes</span>
 
@@ -71,7 +66,7 @@ function ArticleBlock({
           <button
             type='button'
             disabled={loading}
-            onClick={() => upvoteArticle()}
+            onClick={() => upvoteArticle({ variables: { postId: id } })}
           >
             {loading ? 'Loading' : 'Upvote'}
           </button>
