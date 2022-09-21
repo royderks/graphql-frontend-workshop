@@ -75,7 +75,7 @@ mutation UpvoteArticle($postId: Int!) {
   }
 }
 
-# compare 
+# compare
 
 query GetArticleById($id: String!) {
   article(id: $id) {
@@ -99,7 +99,10 @@ But there is also a "second layer" of authentication, meaning the users that nee
 To get a JWT token, you need to run the following mutation:
 
 ```graphql
-mutation LoginUser($email: String = "demo@stepzen.com", $password: String = "demo") {
+mutation LoginUser(
+  $email: String = "demo@stepzen.com"
+  $password: String = "demo"
+) {
   login(email: $email, password: $password) {
     id
     email
@@ -108,7 +111,7 @@ mutation LoginUser($email: String = "demo@stepzen.com", $password: String = "dem
 }
 ```
 
-Let's dive into the React application. 
+Let's dive into the React application.
 
 Hook up the component `src/components/Login.js` to work with this mutation. Store the returned `token` in localStorage.
 
@@ -118,7 +121,7 @@ Hook up the component `src/components/Login.js` to work with this mutation. Stor
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-2)
 
 </p>
 </details>
@@ -133,7 +136,7 @@ Can you alter the query to get the `upvotes` for the articles on the homepage so
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-3)
 
 </p>
 </details>
@@ -144,11 +147,11 @@ When you are resuing parts of fields, you can use fragments to avoid repeating y
 
 The fields for an article in `src/operations.js` are repeated in the `GetArticles` query and the `GetArticleById` query. Can you create a fragment for the fields of an article, and use the fragment in both queries?
 
-<details> 
+<details>
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-4)
 
 </p>
 </details>
@@ -173,7 +176,7 @@ Next, rename any file to be a TypeScript file (e.g. `src/index.js` to `src/index
 <summary>Show solution</summary>
 <p>
 
-[Look at the code]()
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-5)
 
 </p>
 </details>
@@ -205,6 +208,15 @@ Run `npx graphql-codegen --config codegen.yml` to generate the TypeScript files 
 
 Delete the file `src/types.ts` and replace all the missing type definitions with the generated types. Are there any other changes you need to make to our code?
 
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-6)
+
+</p>
+</details>
+
 ### Excercise 7
 
 Next to the types for the GraphQL schema, you can also autogenerate type-safe Apollo Client Hooks for your queries and mutations. To do this, you need to install a new plugin for the the `graphql-codegen` CLI:
@@ -217,19 +229,102 @@ npm i --save-dev @graphql-codegen/typescript-react-apollo
 yarn add -D @graphql-codegen/typescript-react-apollo
 ```
 
-And add this plugin to the `config.yml` file for the code generator.
+And add this plugin to the `codegen.yml` file for the code generator.
 
 Run the script to generate the TypeScript types again. This time it will also create type-safe Hooks for all the operations defined in `src/operations.ts`. Replace all the Apollo Client Hooks with the generated ones.
 
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-7)
+
+</p>
+</details>
+
 ## Excercise 8
 
-Testing
+Now that we have a working application, we can start adding tests. For this we'll be using React Testing Library and Jest. Apollo Client also comes with a set of built-in utilities to help you write tests for your application, such as giving you a `MockedProvider` that you can use to pass mocks to the Apollo Client Hooks in your components.
+
+Add the testing library for React:
+
+```bash
+npm install --save-dev @testing-library/react @testing-library/jest-dom
+
+# or
+
+yarn add -D @testing-library/react @testing-library/jest-dom
+```
+
+And make sure the testing script in `package.json` is correct:
+
+```json
+{
+  "scripts": {
+    // ...
+    "test": "react-scripts test"
+  }
+}
+```
+
+Now you can run `npm run test` or `yarn test` to run the tests. Let's start by adding a test for the `Article` component. Create a new file called `Article.test.jsx` (or `.tsx`) in the `src` folder and add the following test:
+
+```jsx
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import { MockedProvider } from '@apollo/client/testing';
+import Articles from './Article';
+
+const mocks = []; // We'll fill this in next
+
+it('renders without error', async () => {
+  render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <Articles />
+    </MockedProvider>,
+  );
+  expect(await screen.findByText('Loading...')).toBeInTheDocument();
+});
+```
+
+Or choose a different file structure to add the test file, depending on your own preference.
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-8)
+
+</p>
+</details>
+
+## Excercise 9
+
+Let's add some mock data and really test our GraphQL application. We'll be using `mocks` option on `MockedProvider` from Apollo Client to mock the data that we get from the GraphQL API. The `MockedProvider` is a component that you can wrap around your component to pass mock data to the Apollo Client Hooks. It will only return the mock data when the query or mutation **exactly** matches the one that you passed to the `mocks` option.
+
+Test the `Article` component using mock data, check for the existince of the `title` and `description` fields in the rendered component.
+
+> Hint: Check the contents of `src/components/Article`, are there any libraries you should mock?
+
+<details>
+<summary>Show solution</summary>
+<p>
+
+[Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/advanced/ex-9)
+
+</p>
+</details>
+
+## BONUS: Test all components
+
+Next to the `Article` component, you could also test the other components in the application. Try to write tests for the `Home` and `Login` components. Use the `Article` component as an example.
 
 ## BONUS: Change the client to use `urql`
 
-There are more client-side libraries available to use GraphQL in your frontend application. After Apollo Client, [urql](https://formidable.com/open-source/urql/docs/basics/react-preact/) is the second most popular one. 
+There are more client-side libraries available to use GraphQL in your frontend application. After Apollo Client, [urql](https://formidable.com/open-source/urql/docs/basics/react-preact/) is the second most popular one.
 
 Why use urql instead of Apollo Client? Some reasons might be:
+
 - Smaller bundle size (+/-5kb vs +/-32kb)
 - Easier to customize and extend (using Exchanges)
 - Lots of plugins for common use cases (like auth & pagination)
@@ -259,12 +354,11 @@ Cursor-based pagination is for example used by [Relay](https://relay.dev/graphql
 The results won't be the response type we've seen before but a "connection" type:
 
 - Connection type: a connection is a collection of objects with metadata such as:
-    - `pageInfo` has all the information about the current page and contains `hasNextPage`, `hasPreviousPage`, `startCursor`, `endCursor`.
-    - `edges` will provide you flexibility to use your data (node). Each edge has:
-        - a `node`: a record or a data
-        - a `cursor`: base64 encoded string to help GraphQL with pagination
+  - `pageInfo` has all the information about the current page and contains `hasNextPage`, `hasPreviousPage`, `startCursor`, `endCursor`.
+  - `edges` will provide you flexibility to use your data (node). Each edge has:
+    - a `node`: a record or a data
+    - a `cursor`: base64 encoded string to help GraphQL with pagination
 
 Apply cursor-based pagination for the articles listed on the homepage. Make sure the count on the left side is working correctly, meaning the results will be appended to the previously loaded results.
 
-> Hint: have a look at the `paginatedArticles` query in the GraphQL API schema.
- 
+> Hint: have a look at the `paginatedArticles` query in the GraphQL API schema. 

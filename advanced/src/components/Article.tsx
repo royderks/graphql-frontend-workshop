@@ -1,11 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
-import { GET_ARTICLE } from '../operations';
-import {
-  GetArticleByIdQuery,
-  GetArticleByIdQueryVariables,
-} from '../generated/types';
+import { useGetArticleByIdQuery } from '../generated/types';
 
 const articleStyle = {
   margin: 0,
@@ -15,10 +10,7 @@ const articleStyle = {
 function Article() {
   let params = useParams();
 
-  const { loading, error, data } = useQuery<
-    GetArticleByIdQuery,
-    GetArticleByIdQueryVariables
-  >(GET_ARTICLE, {
+  const { loading, error, data } = useGetArticleByIdQuery({
     variables: { id: params?.id || '' },
   });
 
