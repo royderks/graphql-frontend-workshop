@@ -81,7 +81,7 @@ type Login {
 }
 
 type Query {
-  articles(tag: String, page: Int, per_page: Int): [Article]
+  articles(tag: String, page: Int, per_page: Int = 10): [Article]
     @rest(endpoint: "https://dev.to/api/articles")
   article(id: String): Article
     @rest(endpoint: "https://dev.to/api/articles/$id")
@@ -117,11 +117,14 @@ type Query {
       function transformREST(s) {
        var upvotes = JSON.parse(s);
 
-       var count = upvotes.length || 0;
+       if (upvotes && upvotes.length > 0) {
+         return upvotes.length
+       }
 
-       return count
+       return 0;
       }
       """
+      cachepolicy: { strategy: ON }
     )
 }
 
