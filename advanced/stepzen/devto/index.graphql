@@ -67,7 +67,7 @@ type ArticleEdge {
   cursor: String
 }
 
-type Upvote {
+type Upvote @mock {
   createdAt: String
   postId: String
   id: String
