@@ -196,6 +196,9 @@ Create a new file called `codegen.yml` with the following contents:
 ```yaml
 overwrite: true
 schema: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql'
+headers: {
+  authorization: 'stepzen YOUR_STEPZEN_API_KEY (optionally)'
+}
 documents: 'src/operations.ts'
 generates:
   ./src/generated/types.ts:
