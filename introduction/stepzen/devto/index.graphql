@@ -40,10 +40,7 @@ type Article {
   url: String
   user: User
   upvotes: Int
-    @materializer(
-      query: "totalUpvotes"
-      arguments: [{ name: "postId", field: "id" }]
-    )
+    @materializer (query: "totalUpvotes" arguments: [{ name: "postId" field: "id"}])
 }
 
 type User {
@@ -73,23 +70,12 @@ type Upvote @mock {
   id: String
 }
 
-type Login {
-  id: Int
-  email: String
-  password: String
-  token: String
-}
-
 type Query {
-  articles(tag: String, page: Int, per_page: Int = 10): [Article]
+  articles(tag: String, page: Int, per_page: Int): [Article]
     @rest(endpoint: "https://dev.to/api/articles")
   article(id: String): Article
     @rest(endpoint: "https://dev.to/api/articles/$id")
-  paginatedArticles(
-    tag: String
-    first: Int! = 20
-    after: String! = ""
-  ): ArticleConnection
+  paginatedArticles(tag: String, first: Int! = 20, after: String! = ""): ArticleConnection
     @rest(
       endpoint: "https://dev.to/api/articles?per_page=$first&page=$after"
       resultroot: "articles[]"
@@ -109,22 +95,17 @@ type Query {
       }
     )
   upvotes(postId: Int): [Upvote]
-    @rest(endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes")
+    @rest(
+      endpoint: "stepzen:empty"
+    )
   totalUpvotes(postId: Int): Int
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes"
+      endpoint: "stepzen:empty"
       ecmascript: """
       function transformREST(s) {
-       var upvotes = JSON.parse(s);
-
-       if (upvotes && upvotes.length > 0) {
-         return upvotes.length
-       }
-
-       return 0;
+       return Math.floor(Math.random() * 12) + 1
       }
       """
-      cachepolicy: { strategy: ON }
     )
 }
 
@@ -136,23 +117,6 @@ type Mutation {
       postbody: """
       {
         "postId": "{{ .Get "postId" }}"
-      }
-      """
-    )
-  login(email: String!, password: String!): Login
-    @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/users?email=$email&password=$password"
-      ecmascript: """
-      function transformREST(s) {
-       var result = JSON.parse(s);
-
-       if (result.length === 0) {
-         return {
-           error: "Invalid email or password"
-         }
-       }
-
-       return result[0]
       }
       """
     )
