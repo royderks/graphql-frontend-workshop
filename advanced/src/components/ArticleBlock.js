@@ -32,9 +32,7 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
     <li key={id} style={listItemStyle}>
       <span style={labelStyle}>{index + 1}. </span>
 
-      <Link to={`articles/${id}`}>
-        <button style={titleStyle}>{title}</button>
-      </Link>
+      
 
       <span style={{ paddingLeft: 5, ...labelStyle }}>({user.username})</span>
 
@@ -59,6 +57,9 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
           <Link to={`/articles/${id}`}>More...</Link>
         </small>
       </p>
+      <Link to={`articles/${id}`}>
+        <button style={titleStyle}>{title}</button>
+      </Link>
     </li>
   );
 }

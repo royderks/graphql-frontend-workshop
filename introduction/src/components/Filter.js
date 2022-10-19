@@ -5,11 +5,16 @@ const tagListStyle = {
   margin: 0,
   padding: 0,
   display: 'flex',
+  
 };
 
 const tagItemStyle = {
-  padding: '5px',
+  padding: "0 10px 10px 0",
   cursor: 'pointer',
+};
+
+const textStyle = {
+  color: "#F1F0ED"
 };
 
 const tags = ['react', 'graphql', 'typescript'];
@@ -17,7 +22,6 @@ const tags = ['react', 'graphql', 'typescript'];
 function Filter({ filter, setFilter }) {
   return (
     <ul style={tagListStyle}>
-      <li style={tagItemStyle}>Filter:</li>
       {tags.map((tag) => (
         <li
           key={tag}
@@ -26,7 +30,7 @@ function Filter({ filter, setFilter }) {
             ...(filter === tag && { fontWeight: 'bold' }),
           }}
         >
-          <Link to={`/`} onClick={() => setFilter(tag)}>
+          <Link to={`/`} onClick={() => setFilter(tag)} style={textStyle}>
             {tag}
           </Link>
         </li>

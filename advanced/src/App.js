@@ -19,7 +19,7 @@ const headerStyle = {
 };
 
 const contentStyle = {
-  background: '#f6f6ef',
+  background: '#FAC0B1',
 };
 
 const navStyle = {
@@ -35,7 +35,7 @@ function App() {
       <div>
         <div style={bodyStyle}>
           <nav style={headerStyle}>
-            <h1>Hipster news app</h1>
+            <h1>GraphQL</h1>
             <div style={navStyle}>
               <Filter filter={filter} setFilter={setFilter} />
               <Login />

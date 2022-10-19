@@ -7,17 +7,34 @@ const labelStyle = {
 };
 
 const listItemStyle = {
-  margin: "0 5px",
+  margin: "28px 0px",
+  padding: "5px 40px",
+  background: "#E4E1DB"
+};
+
+const buttonStyle = {
+  backgroundColor: "#333333",
+    backgroundImage: "none",
+    backgroundSize: "100% 40px",
+    fontWeight: "normal",
+    color: "#F1F0ED",
+    padding: "10px",
+    border: "none",
+    marginRight: "10px"
 };
 
 const titleStyle = {
-  background: "transparent",
-  color: "#333333",
-  border: "none",
-  font: "inherit",
-  cursor: "pointer",
-  padding: "5px 0",
-};
+  textDecoration: "none",
+  color: "#333",
+}
+
+const moreStyle = {
+  color: "#333",
+  marginBottom: "5px",
+  textDecoration: "none",
+  borderBottom: "1px solid #FF00FF",
+   paddingBottom: "3px"
+}
 
 const UPVOTE_ARTICLE = gql`
   mutation UpvoteArticle($postId: Int!) {
@@ -37,35 +54,35 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
 
   return (
     <li key={id} style={listItemStyle}>
-      <span style={labelStyle}>{index + 1}. </span>
-
-      <Link to={`articles/${id}`}>
-        <button style={titleStyle}>{title}</button>
-      </Link>
-
-      <span style={{ paddingLeft: 5, ...labelStyle }}>({user.username})</span>
-
+      <h2>
+        <Link style={titleStyle} to={`articles/${id}`}>
+          {title}
+        </Link>
+      </h2>
+      
+      {description}
+      <br></br><br></br>
+      <Link to={`/articles/${id}`} style={moreStyle}>Les mer</Link>
       <p>
-        <span style={labelStyle}>{upvotes} upvotes</span>
-
-        <span style={labelStyle}>{error && `Error! ${error.message}`}</span>
-        <span style={labelStyle}>{data?.upvoteArticle?.id && "Upvoted!"}</span>
-
-        <button
+      <br></br>
+      <button
           type="button"
+          style={buttonStyle}
           disabled={loading}
           onClick={() => upvoteArticle()}
         >
-          {loading ? "Loading" : "Upvote"}
+          <strong>{loading ? "Loading" : "Upvote"}</strong>
         </button>
+
+        <span style={labelStyle}>{upvotes} upvotes</span>
+        
+        <span style={labelStyle}>{error && `Error! ${error.message}`}</span>
+        <span style={labelStyle}>{data?.upvoteArticle?.id && "Upvoted!"}</span>
+        <p style={{fontSize: 12, float: "right"}}>Posted by:<span style={{ paddingLeft: 5, ...labelStyle }}>{user.username}</span></p>
+        
       </p>
 
-      <p>
-        <small>
-          <span>{description} </span>
-          <Link to={`/articles/${id}`}>More...</Link>
-        </small>
-      </p>
+      
     </li>
   );
 }
