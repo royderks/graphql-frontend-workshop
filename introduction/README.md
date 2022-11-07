@@ -232,6 +232,9 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 
 const client = new ApolloClient({
   uri: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql',
+  headers: {
+    authorization: 'YOUR_STEPZEN_API_KEY',
+  },
   cache: new InMemoryCache(),
 });
 
@@ -241,36 +244,6 @@ root.render(
     <App />
   </ApolloProvider>,
 );
-```
-
-if you're using a private, secure StepZen GraphQL endpoint you need to add your API key to the `headers` option:
-
-```js
-import {
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache,
-  ApolloProvider,
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-
-const httpLink = createHttpLink({
-  uri: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql',
-});
-
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      authorization: 'YOUR_STEPZEN_API_KEY',
-    },
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
 ```
 
 The GraphQL API is available at the endpoint printed in the terminal where you ran `stepzen start`, this endpoint starts with `https://` (the `localhost` endpoint is only available for local epxloration with GraphiQL).
@@ -348,10 +321,9 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
 }
 ```
 
-More advanced refetching can be done by using the `query` option. This option takes a GraphQL query, and refetches the data based on the query. 
+More advanced refetching can be done by using the `query` option. This option takes a GraphQL query, and refetches the data based on the query.
 
 [Look at the code](https://github.com/royderks/graphql-frontend-workshop/tree/introduction/ex-11)
 
 </p>
 </details>
-

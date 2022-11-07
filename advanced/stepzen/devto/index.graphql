@@ -67,10 +67,14 @@ type ArticleEdge {
   cursor: String
 }
 
-type Upvote @mock {
+type Upvote {
   createdAt: String
   postId: String
   id: String
+}
+
+type UpvoteResponse {
+  name: ID
 }
 
 type Login {
@@ -108,34 +112,37 @@ type Query {
         setters: [{ field: "total", path: "total" }]
       }
     )
-  upvotes(postId: Int): [Upvote]
-    @rest(endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes")
+  upvotes(postId: Int): JSON
+    @rest(
+      endpoint: "https://stepzen-demo-1c698-default-rtdb.firebaseio.com/upvotes.json?orderBy=%22postId%22&equalTo=%22{{.Get \"postId\"}}%22"
+      transforms: [{ pathpattern: [], editor: "objectToArray" }]
+    )
+
   totalUpvotes(postId: Int): Int
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes"
+      endpoint: "https://stepzen-demo-1c698-default-rtdb.firebaseio.com/upvotes.json?orderBy=%22postId%22&equalTo=%22{{.Get \"postId\"}}%22"
       ecmascript: """
       function transformREST(s) {
        var upvotes = JSON.parse(s);
 
-       if (upvotes && upvotes.length > 0) {
-         return upvotes.length
+       if (upvotes) {
+         return Object.keys(upvotes).length; 
        }
 
        return 0;
       }
       """
-      cachepolicy: { strategy: ON }
     )
 }
 
 type Mutation {
-  upvoteArticle(postId: Int): Upvote
+  upvoteArticle(postId: String): JSON
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/upvotes"
+      endpoint: "https://stepzen-demo-1c698-default-rtdb.firebaseio.com/upvotes.json"
       method: POST
       postbody: """
       {
-        "postId": "{{ .Get "postId" }}"
+        "postId": "{{.Get "postId"}}"
       }
       """
     )
