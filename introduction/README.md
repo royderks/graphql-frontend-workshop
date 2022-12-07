@@ -40,10 +40,9 @@ After the installation is completed, you can [signup](https://stepzen.com/signup
 
 This application uses a GraphQL API created with StepZen, that is connected to DEV.to. To deploy this GraphQL API you need to use the StepZen CLI. You can then use GraphQL to explore the API.
 
-To deploy the API, run the following command:
+Make sure you have the StepZen CLI installed, and then run the following command to deploy the API:
 
 ```bash
-cd stepzen
 stepzen start
 ```
 

@@ -126,7 +126,7 @@ type Query {
        var upvotes = JSON.parse(s);
 
        if (upvotes) {
-         return Object.keys(upvotes).length; 
+         return Object.keys(upvotes).length;
        }
 
        return 0;
@@ -148,18 +148,19 @@ type Mutation {
     )
   login(email: String!, password: String!): Login
     @rest(
-      endpoint: "https://63271076ba4a9c4753300058.mockapi.io/api/users?email=$email&password=$password"
+      endpoint: "stepzen:empty"
       ecmascript: """
       function transformREST(s) {
-       var result = JSON.parse(s);
-
-       if (result.length === 0) {
-         return {
-           error: "Invalid email or password"
-         }
-       }
-
-       return result[0]
+        if (get('email') === 'demo' && get('password') === 'demo') {
+          return JSON.stringify({
+            id: 1,
+            token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IldlbGNvbWUgdG8gU3RlcFplbiJ9._CQn7X-Rcq5SQv_pJPEYUapmTgHm3zvVr2yb7qnI8g0'
+          });
+        } else {
+          return JSON.stringify({
+            error: 'Invalid email or password'
+          })
+        }
       }
       """
     )

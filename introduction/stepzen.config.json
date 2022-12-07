@@ -1,3 +1,4 @@
 {
+  "root": "stepzen",
   "endpoint": "api/newsapp"
 }
