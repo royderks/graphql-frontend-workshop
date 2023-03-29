@@ -195,18 +195,24 @@ yarn add -D typescript ts-node @graphql-codegen/cli @graphql-codegen/client-pres
 
 Create a new file called `codegen.yml` with the following contents:
 
-```yaml
-overwrite: true
-schema: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql'
-headers: {
-  authorization: 'stepzen YOUR_STEPZEN_API_KEY (optionally)'
+```js
+import { CodegenConfig } from '@graphql-codegen/cli'
+ 
+const config: CodegenConfig = {
+  schema: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql',
+  headers: {
+    authorization: 'stepzen YOUR_STEPZEN_API_KEY (optionally)'
+  },
+  documents: ['src/**/*.tsx'],
+  ignoreNoDocuments: true, // for better experience with the watcher
+  generates: {
+    './src/gql/': {
+      preset: 'client'
+    }
+  }
 }
-documents: 'src/operations.ts'
-generates:
-  ./src/generated/types.ts:
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
+ 
+export default config
 ```
 
 Run `npx graphql-codegen --config codegen.yml` to generate the TypeScript files based on the GraphQL schema. Instead of using `npx` you can also create a new script in `package.json` to generate the types.
