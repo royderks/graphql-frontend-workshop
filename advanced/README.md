@@ -186,9 +186,11 @@ Next, rename any file to be a TypeScript file (e.g. `src/index.js` to `src/index
 You can use the GraphQL schema to autogenerate the TypeScript types instead of having to manually type these. To do this, you need to install the `graphql-codegen` CLI, which you first need to install using npm (including its dependencies):
 
 ```bash
-npm i --save-dev @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations
+npm i --save-dev typescript ts-node @graphql-codegen/cli @graphql-codegen/client-preset
+
+
 # or
-yarn add -D @graphql-codegen/cli @graphql-codegen/typescript @graphql-codegen/typescript-operations
+yarn add -D typescript ts-node @graphql-codegen/cli @graphql-codegen/client-preset
 ```
 
 Create a new file called `codegen.yml` with the following contents:
