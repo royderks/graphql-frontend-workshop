@@ -200,9 +200,6 @@ import { CodegenConfig } from '@graphql-codegen/cli'
  
 const config: CodegenConfig = {
   schema: 'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql',
-  headers: {
-    authorization: 'stepzen YOUR_STEPZEN_API_KEY (optionally)'
-  },
   documents: ['src/**/*.tsx'],
   ignoreNoDocuments: true, // for better experience with the watcher
   generates: {
@@ -214,6 +211,32 @@ const config: CodegenConfig = {
  
 export default config
 ```
+
+With headers:
+
+```
+import { CodegenConfig } from '@graphql-codegen/cli'
+
+const config: CodegenConfig = {
+    schema: [
+        {
+            'https://YOUR_USERNAME.stepzen.net/api/newsapp/__graphql': {
+                headers: {
+                    Authorization: 'apikey YOUR_STEPZEN_API_KEY (optionally)',
+                },
+            },
+        },
+    ],
+    ignoreNoDocuments: true, // for better experience with the watcher
+    generates: {
+        './src/gql/': {
+            preset: 'client'
+        }
+    }
+}
+
+export default config
+ ```
 
 Run `npx graphql-codegen --watch` to generate the TypeScript files based on the GraphQL schema. Instead of using `npx` you can also create a new script in `package.json` to generate the types.
 
