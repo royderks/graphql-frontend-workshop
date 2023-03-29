@@ -215,7 +215,7 @@ const config: CodegenConfig = {
 export default config
 ```
 
-Run `npx graphql-codegen --config codegen.yml` to generate the TypeScript files based on the GraphQL schema. Instead of using `npx` you can also create a new script in `package.json` to generate the types.
+Run `npx graphql-codegen --watch` to generate the TypeScript files based on the GraphQL schema. Instead of using `npx` you can also create a new script in `package.json` to generate the types.
 
 Delete the file `src/types.ts` and replace all the missing type definitions with the generated types. Are there any other changes you need to make to our code?
 
