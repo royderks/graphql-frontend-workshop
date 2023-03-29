@@ -193,7 +193,7 @@ npm i --save-dev typescript ts-node @graphql-codegen/cli @graphql-codegen/client
 yarn add -D typescript ts-node @graphql-codegen/cli @graphql-codegen/client-preset
 ```
 
-Create a new file called `codegen.yml` with the following contents:
+Create a new file called `codegen.ts` with the following contents:
 
 ```js
 import { CodegenConfig } from '@graphql-codegen/cli'
