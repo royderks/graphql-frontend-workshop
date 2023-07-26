@@ -23,7 +23,7 @@ function ArticleBlock({ id, title, description, user, upvotes, index }) {
   const [upvoteArticle, { data, loading, error }] = useMutation(
     UPVOTE_ARTICLE,
     {
-      variables: { postId: id },
+      variables: { postId: id.toString() },
       refetchQueries: [{ query: GET_ARTICLES }],
     },
   );
